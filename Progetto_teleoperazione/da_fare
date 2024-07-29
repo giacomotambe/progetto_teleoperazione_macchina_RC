@@ -1,1 +1,11 @@
+abbiamo iniziato a lavorare sulla teleoperazione utilizzando al posto del radio comando un servo tester il quale genera un segnale pwm con un duty cicle regolabile sia manualmente che automaticamnte. A questo punto abbiamo demodulato il segnale in frequenza tramite un 
+void NVIC_Config(void)
+{
+    // Configura la priorità dell'interruzione per TIM2
+    HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);  // Priorità di pre-emption 1, sottopriorità 0
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
 
+    // Configura la priorità dell'interruzione per TIM3
+    HAL_NVIC_SetPriority(TIM3_IRQn, 2, 0);  // Priorità di pre-emption 2, sottopriorità 0
+    HAL_NVIC_EnableIRQ(TIM3_IRQn);
+}
