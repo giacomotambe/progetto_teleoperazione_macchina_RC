@@ -1,17 +1,6 @@
 abbiamo iniziato a lavorare sulla teleoperazione utilizzando al posto del radio comando un servo tester il quale genera un segnale pwm con un duty cicle regolabile sia manualmente che automaticamnte. A questo punto abbiamo demodulato il segnale in frequenza tramite un 
-void NVIC_Config(void)
-{
-    // Configura la priorità dell'interruzione per TIM2
-    HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);  // Priorità di pre-emption 1, sottopriorità 0
-    HAL_NVIC_EnableIRQ(TIM2_IRQn);
 
-    // Configura la priorità dell'interruzione per TIM3
-    HAL_NVIC_SetPriority(TIM3_IRQn, 2, 0);  // Priorità di pre-emption 2, sottopriorità 0
-    HAL_NVIC_EnableIRQ(TIM3_IRQn);
-}
-
-
-
+durante la connessione di più canali abbiamo riscontrato un problema nella trasmissione seriale del buffer, all'inizio abbiamo pensato che il problema fosse dovuto a priorità dverse delle interruzioni dei timer per cui abbiamo cercato di modificarle in modo manuale nel codice tramite il seguente codice: 
 void NVIC_Config(void)
 {
     // Configura la priorità dell'interruzione per TIM1 e TIM2
@@ -32,3 +21,5 @@ void TIM2_CC_IRQHandler(void)
 {
     HAL_TIM_IRQHandler(&htim2);
 }
+come normale che sia il codice non ha risolto il problema in quanto tutte le interruzioni generate dai timer vengono gestite una dopo l'altra prima che arrivi l'interruzione successiva. Per risolvere invece il problema in modo definitivo abbiamo aumentato la velocità di trasmissione dei bit del seriale a 2Mbit/sec in questo modo la trasmissione del messaggio finisce prima dell'interruzione successiva. 
+
