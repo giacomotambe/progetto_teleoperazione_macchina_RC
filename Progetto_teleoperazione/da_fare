@@ -22,4 +22,7 @@ void TIM2_CC_IRQHandler(void)
     HAL_TIM_IRQHandler(&htim2);
 }
 come normale che sia il codice non ha risolto il problema in quanto tutte le interruzioni generate dai timer vengono gestite una dopo l'altra prima che arrivi l'interruzione successiva. Per risolvere invece il problema in modo definitivo abbiamo aumentato la velocità di trasmissione dei bit del seriale a 2Mbit/sec in questo modo la trasmissione del messaggio finisce prima dell'interruzione successiva. 
+Ci siamo accorti che scollegando il segnale pwm dal stm il timer realtivo all'ingresso continua a generare interruzioni questo però soltanto in alcuni casi questo è quindi riconducibile a possibili interferenze.
+Comunque in generale qunado il ricevitore non invia più il segnale pwm, cioè il riceeviore non riceve dati dal radiocomando, dobbiamo inviare al motore e ai servo il segnale di stop. Utilizziamo quindi l'interruzzione di fine periodo del timer e quando viene catturata la stm invia al raspberry il segnale di stop per i motori
+A questo punto rimangono da gestire le priorità di comunicazione cioè il grilletto di regolazione della velocità del primo telecomando deve avere la precendenza sul secondo 
 
