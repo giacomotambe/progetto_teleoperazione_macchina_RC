@@ -1,12 +1,22 @@
-import serial
+import matplotlib
+# Choose the backend based on your environment
+# Uncomment one of the following lines based on what you have installed
+
+# For Qt5 backend
+matplotlib.use('Qt5Agg')
+
+# For Tkinter backend (if Qt5 is problematic)
+# matplotlib.use('TkAgg')
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import serial
 import re
 from collections import deque
 
 # Configure the serial port
 try:
-    ser = serial.Serial('COM5', 2000000)  # Adjust COM port and baud rate as necessary
+    ser = serial.Serial('/dev/ttyACM0', 2000000)  # Adjust COM port and baud rate as necessary
 except serial.SerialException as e:
     print(f"Error: Could not open serial port. {e}")
     exit()
@@ -43,23 +53,23 @@ def update_plot(frame):
             except ValueError:
                 print(f"Warning: Failed to convert duty cycle '{match.group(2)}' to float.")
                 continue
-            
+
             if timer_id in x_data:
                 if len(x_data[timer_id]) == 0:
                     new_time_index = 1
                 else:
                     new_time_index = x_data[timer_id][-1] + 1
-                    
+
                 x_data[timer_id].append(new_time_index)
                 y_data[timer_id].append(duty_cycle)
-                
+
                 # Update the data for the respective line
                 lines[timer_id].set_data(x_data[timer_id], y_data[timer_id])
-                
+
                 # Set the limits of the axes
                 ax.relim()
                 ax.autoscale_view()
-    
+
     # Redraw the plot
     ax.legend()
     fig.canvas.draw()
@@ -81,4 +91,5 @@ ax.legend()  # Show legend
 ax.grid(True)  # Enable the grid
 
 # Show plot
-plt.show(block=True)
+plt.show()  # Allow real-time updates
+
