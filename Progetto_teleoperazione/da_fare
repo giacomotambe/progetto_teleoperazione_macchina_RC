@@ -26,8 +26,13 @@ Ci siamo accorti che scollegando il segnale pwm dal stm il timer realtivo all'in
 Comunque in generale qunado il ricevitore non invia più il segnale pwm, cioè il riceeviore non riceve dati dal radiocomando, dobbiamo inviare al motore e ai servo il segnale di stop. Utilizziamo quindi l'interruzzione di fine periodo del timer e quando viene catturata la stm invia al raspberry il segnale di stop per i motori
 A questo punto rimangono da gestire le priorità di comunicazione cioè il grilletto di regolazione della velocità del primo telecomando deve avere la precendenza sul secondo 
 
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+
 network={
     ssid="NomeReteWiFi"
     psk="PasswordWiFi"
     key_mgmt=WPA-PSK
 }
+
